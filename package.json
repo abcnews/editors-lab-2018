@@ -1,0 +1,23 @@
+{
+  "name": "editors-lab-2018",
+  "version": "1.0.0",
+  "description": "Our work at Walkleys/GEN Editors Lab Sydney event in 2018.",
+  "license": "MIT",
+  "private": true,
+  "contributors": [
+    "Ben Collins <Collins.Ben@abc.net.au>",
+    "Colin Gourlay <Gourlay.Colin@abc.net.au>",
+    "Nathan Hoad <Hoad.Nathan@abc.net.au>"
+  ],
+  "aunty": "preact-app",
+  "scripts": {
+    "start": "aunty serve --host=localhost"
+  },
+  "devDependencies": {
+    "@abcnews/aunty": "^7.7.0"
+  },
+  "dependencies": {
+    "preact": "^8.2.7",
+    "preact-compat": "^3.18.0"
+  }
+}
