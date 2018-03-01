@@ -4,6 +4,9 @@
 # builds
 /build
 
+# uploads
+/uploads/*
+
 # misc
 .DS_Store
 npm-debug.log

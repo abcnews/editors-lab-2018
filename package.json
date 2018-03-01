@@ -11,13 +11,22 @@
   ],
   "aunty": "preact-app",
   "scripts": {
-    "start": "aunty serve --host=localhost"
+    "start": "aunty serve --host=localhost",
+    "server": "node ./server/index.js"
   },
   "devDependencies": {
     "@abcnews/aunty": "^7.7.0"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "express-fileupload": "^0.4.0",
+    "gimmea": "^1.5.1",
+    "mailgun-js": "^0.16.0",
+    "pify": "^3.0.0",
     "preact": "^8.2.7",
-    "preact-compat": "^3.18.0"
+    "preact-compat": "^3.18.0",
+    "sqlite3": "^3.1.13"
   }
 }

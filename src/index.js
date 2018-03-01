@@ -5,7 +5,7 @@ const root = document.querySelector(`[data-${PROJECT_NAME}-root]`);
 
 function init() {
   const App = require('./components/App');
-  render(<App projectName={PROJECT_NAME} />, root, root.firstChild);
+  render(<App />, root, root.firstChild);
 }
 
 init();

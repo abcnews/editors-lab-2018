@@ -1,13 +1,12 @@
 const { h, Component } = require('preact');
+const FileUpload = require('../FileUpload');
 const styles = require('./styles.scss');
-const worm = require('./worm.svg');
 
 class App extends Component {
-  render({ projectName }) {
+  render() {
     return (
       <div className={styles.root}>
-        <img className={styles.worm} src={worm} />
-        <h1>{projectName}</h1>
+        <FileUpload id={'random'} onUploaded={console.log} />
       </div>
     );
   }
