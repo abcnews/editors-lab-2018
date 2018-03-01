@@ -1,22 +1,22 @@
 const sqlite3 = require('sqlite3');
 const Gimmea = require('gimmea');
+const config = require('./config');
 const knex = require('knex')({
   client: 'sqlite3',
   connection: {
-    filename: `./server/${process.env.NODE_ENV}.sqlite`
+    filename: config.DATABASE
   },
   useNullAsDefault: true
 });
 
-module.exports = knex;
-
-module.exports.createProject = async body => {
+const createProject = async body => {
   const now = new Date();
+  const slug = Gimmea.hash(null, 6);
 
   // Insert project -> SQLite returns the new ID from an insert
   const projectId = (await knex('projects').insert({
     email: body.email,
-    slug: Gimmea.hash(null, 6),
+    slug,
     createdAt: now,
     updatedAt: now
   }))[0];
@@ -33,10 +33,18 @@ module.exports.createProject = async body => {
   );
 
   // Retreive the stuff we just saved and piece it back together
+  return await findProject(slug);
+};
+
+const findProject = async slug => {
   const project = await knex('projects')
-    .where({ id: projectId })
+    .where({ slug })
     .first();
-  project.uploads = await knex('uploads').where({ projectId });
+  project.uploads = await knex('uploads').where({ projectId: project.id });
 
   return project;
 };
+
+module.exports = knex;
+module.exports.createProject = createProject;
+module.exports.findProject = findProject;
