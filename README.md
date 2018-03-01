@@ -2,7 +2,11 @@
 
 Our work at Walkleys/GEN Editors Lab Sydney event in 2018.
 
-A project generated from [aunty](https://github.com/abcnews/aunty)'s `preact-app` template.
+## API
+
+`POST /api/projects` - create a new project -> { email, uploads }
+`GET /api/projects/:projectSlug` - get a project
+`PUT /api/projects/:projectSlug/uploads/:uploadSlug` - upload a file
 
 ## Authors
 

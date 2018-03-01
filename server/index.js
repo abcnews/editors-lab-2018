@@ -1,41 +1,37 @@
-const http = require('http');
-const path = require('path');
-const bodyParser = require('body-parser');
+const Path = require('path');
 const express = require('express');
+const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
-const create = require('./create');
-const view = require('./view');
-const upload = require('./upload');
-const done = require('./done');
-const inbox = require('./inbox');
 
 const PORT = process.env.PORT || 9000;
 
 const app = express();
-const staticDir = path.resolve(__dirname, '../build');
-const uploadsDir = path.resolve(__dirname, '../uploads');
 
+// Boilerplate
+app.use(require('helmet')());
 app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-);
-app.use(express.static(staticDir));
-app.use('/uploads', express.static(uploadsDir));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload({ preserveExtension: true }));
 
-app.post('/create', create);
-app.get('/view', view);
-app.post('/upload', upload);
-app.post('/done', done);
-app.get('/inbox', inbox);
+// Serve files
+app.use(express.static(Path.resolve(__dirname, '../build')));
+app.use('/uploads', express.static(Path.resolve(__dirname, '../uploads')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(staticDir, 'index.html'));
+// Routes
+app.use('/api', require('./routes'));
+app.get('*', (request, response) => {
+  response.sendFile(Path.resolve(__dirname, '../public/index.html'));
 });
 
-http.createServer(app).listen(PORT, () => {
-  console.log('Express server listening on port ' + PORT);
-  console.log('http://localhost:' + PORT);
+app.use((err, request, response, next) => {
+  response.json({ err });
 });
+
+if (!module.parent) {
+  // Start the game already!
+  app.listen(PORT, () => {
+    console.log(` 👍 Server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

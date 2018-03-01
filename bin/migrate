@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+const db = require('../server/db');
+db
+  .raw(
+    `
+  CREATE TABLE IF NOT EXISTS uploads(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    projectId INTEGER,
+    createdAt DATETIME,
+    updatedAt DATETIME,
+    slug TEXT,
+    filename TEXT,
+    type TEXT,
+    notes TEXT,
+    FOREIGN KEY(projectId) REFERENCES projects(id)
+  );`
+  )
+  .then(() => {
+    db
+      .raw(
+        `
+  CREATE TABLE IF NOT EXISTS projects(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    createdAt DATETIME,
+    updatedAt DATETIME,
+    slug TEXT,
+    email TEXT
+  );
+  `
+      )
+      .then(() => {
+        process.exit();
+      });
+  });
