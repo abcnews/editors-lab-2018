@@ -1,19 +1,12 @@
-const Path = require('path');
 const express = require('express');
 const router = express.Router();
 const db = require('./db');
-
-const UPLOAD_PATH = Path.resolve(__dirname, '../uploads');
+const config = require('./config');
 
 // Param helpers
 
 router.param('project', async (request, response, next, slug) => {
-  const project = await db('projects')
-    .where({ slug })
-    .first();
-  project.uploads = await db('uploads').where({ projectId: project.id });
-
-  request.project = project;
+  request.project = await db.findProject(slug);
   next();
 });
 
@@ -44,12 +37,22 @@ router.put('/projects/:project/uploads/:upload', (request, response) => {
     return res.status(400).json({ err: 'No files were uploaded.' });
   }
 
+  if (request.upload.projectId !== request.project.id) {
+    return res.status(500).json({ err: 'That upload does not belong to the project' });
+  }
+
   const file = request.files.file;
   const uploadFilename = `${request.upload.slug}-${file.name}`;
-  const uploadPath = `${UPLOAD_PATH}/${uploadFilename}`;
+  const uploadPath = `${config.UPLOAD_PATH}/${uploadFilename}`;
 
-  file.mv(uploadPath, err => {
+  file.mv(uploadPath, async err => {
     if (err) return res.status(500).json({ err });
+
+    // Save and refresh the upload
+    db('uploads')
+      .where({ id: upload.id })
+      .update({ filename: uploadFilename });
+    const project = await db.findProject(request.project.slug);
 
     response.json(project);
   });
