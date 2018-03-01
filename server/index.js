@@ -20,7 +20,7 @@ app.use('/uploads', express.static(Path.resolve(__dirname, '../uploads')));
 // Routes
 app.use('/api', require('./routes'));
 app.get('*', (request, response) => {
-  response.sendFile(Path.resolve(__dirname, '../public/index.html'));
+  response.sendFile(Path.resolve(__dirname, '../build/index.html'));
 });
 
 app.use((err, request, response, next) => {
