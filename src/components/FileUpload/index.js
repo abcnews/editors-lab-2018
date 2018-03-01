@@ -1,8 +1,7 @@
-const { post } = require('axios');
+const { put } = require('axios');
 const { h, Component } = require('preact');
 const styles = require('./styles.scss');
 
-const URL = '/upload';
 const CONFIG = {
   headers: {
     'content-type': 'multipart/form-data'
@@ -25,9 +24,9 @@ class FileUpload extends Component {
   onFormSubmit(event) {
     event.preventDefault();
 
-    this.fileUpload(this.state.file).then(response => {
+    this.fileUpload().then(response => {
       if (this.props.onUploaded) {
-        this.props.onUploaded({ slug: this.props.slug, data: response.data });
+        this.props.onUploaded({ slug: this.props.upload, data: response.data });
       }
     });
   }
@@ -36,13 +35,12 @@ class FileUpload extends Component {
     this.setState({ file: e.target.files[0] });
   }
 
-  fileUpload(file) {
+  fileUpload() {
     const formData = new FormData();
 
-    formData.append('file', file);
-    formData.append('slug', this.props.slug);
+    formData.append('file', this.state.file);
 
-    return post(URL, formData, CONFIG);
+    return put(`/api/projects/${this.props.project}/uploads/${this.props.uploads}`, formData, CONFIG);
   }
 
   render() {

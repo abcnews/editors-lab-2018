@@ -3,9 +3,6 @@ const { h, Component } = require('preact');
 const FileUpload = require('../FileUpload');
 const styles = require('./styles.scss');
 
-const DONE_URL = '/done';
-const VIEW_URL = '/view';
-
 class Project extends Component {
   constructor(props) {
     super(props);
@@ -23,11 +20,7 @@ class Project extends Component {
       isDone: false
     };
 
-    const formData = new FormData();
-
-    formData.append('slug', this.props.slug);
-
-    get(VIEW_URL, formData).then(response => {
+    get(`/api/projects/${this.props.slug}`).then(response => {
       this.setState({ files: response.data.files });
     });
   }
@@ -50,13 +43,13 @@ class Project extends Component {
     });
   }
 
-  done() {
-    post(DONE_URL, new FormData()).then(response => {
-      // TODO: Thank you page?
-    });
+  // done() {
+  //   post(DONE_URL, new FormData()).then(response => {
+  //     // TODO: Thank you page?
+  //   });
 
-    this.setState({ isDone: true });
-  }
+  //   this.setState({ isDone: true });
+  // }
 
   render() {
     return (
@@ -64,15 +57,19 @@ class Project extends Component {
         <div className={styles.files}>
           {this.state.files.map(file => (
             <div className={styles.file}>
-              {file.url ? <img src={file.url} /> : <FileUpload slug={file.slug} onUploaded={this.onFileUploaded} />}
+              {file.url ? (
+                <img src={file.url} />
+              ) : (
+                <FileUpload project={this.props.slug} upload={file.slug} onUploaded={this.onFileUploaded} />
+              )}
             </div>
           ))}
         </div>
-        {this.state.isDone ? null : (
+        {/* {this.state.isDone ? null : (
           <button className={styles.done} onClick={this.done}>
             I'm done!
           </button>
-        )}
+        )} */}
       </div>
     );
   }

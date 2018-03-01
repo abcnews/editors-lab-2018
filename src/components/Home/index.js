@@ -3,8 +3,6 @@ const { h, Component } = require('preact');
 const { route } = require('preact-router');
 const styles = require('./styles.scss');
 
-const CREATE_URL = '/create';
-
 const FILE_TYPES = {
   'photo-person': 'A photo of someone',
   'photo-object': 'A photo of something'
@@ -61,7 +59,7 @@ class Home extends Component {
       formData.append('file', JSON.stringify(file));
     });
 
-    post(CREATE_URL, formData).then(response => {
+    post('/api/projects', formData).then(response => {
       route(`/${response.data.slug}/inbox`);
     });
   }

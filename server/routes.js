@@ -44,9 +44,8 @@ router.put('/projects/:project/uploads/:upload', (request, response) => {
     return res.status(400).json({ err: 'No files were uploaded.' });
   }
 
-  const id = request.body.id;
   const file = request.files.file;
-  const uploadFilename = `${id}-${file.name}`;
+  const uploadFilename = `${request.upload.slug}-${file.name}`;
   const uploadPath = `${UPLOAD_PATH}/${uploadFilename}`;
 
   file.mv(uploadPath, err => {

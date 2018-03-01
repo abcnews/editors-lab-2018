@@ -12,11 +12,7 @@ class ProjectInbox extends Component {
       files: []
     };
 
-    const formData = new FormData();
-
-    formData.append('slug', this.props.slug);
-
-    get(VIEW_URL, formData).then(response => {
+    get(`/api/projects/${slug}`).then(response => {
       this.setState({ files: response.data.files });
     });
   }
@@ -40,11 +36,6 @@ class ProjectInbox extends Component {
           </div>
         )}
         <div className={styles.files}>
-          {this.state.files.map(file => (
-            <div className={styles.file}>
-              {file.url ? <img src={file.url} /> : <FileUpload slug={file.slug} onUploaded={this.onFileUploaded} />}
-            </div>
-          ))}
           {this.state.files.map(file => (
             <div className={styles.file}>
               {`File (type: ${FILE_TYPES[file.type]})`}
