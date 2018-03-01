@@ -27,7 +27,7 @@ class FileUpload extends Component {
 
     this.fileUpload(this.state.file).then(response => {
       if (this.props.onUploaded) {
-        this.props.onUploaded(response.data);
+        this.props.onUploaded({ slug: this.props.slug, data: response.data });
       }
     });
   }
@@ -40,7 +40,7 @@ class FileUpload extends Component {
     const formData = new FormData();
 
     formData.append('file', file);
-    formData.append('id', this.props.id);
+    formData.append('slug', this.props.slug);
 
     return post(URL, formData, CONFIG);
   }
