@@ -1,10 +1,10 @@
 const { get } = require('axios');
-const { h, Component } = require('preact');
+const React = require('react');
 const { FILE_TYPES } = require('../../constants');
 const { getFileURL } = require('../../utils');
 const styles = require('./styles.scss');
 
-class ProjectInbox extends Component {
+class ProjectInbox extends React.Component {
   constructor(props) {
     super(props);
 
@@ -35,7 +35,7 @@ class ProjectInbox extends Component {
             <h2>Your project has been created!</h2>
             <p>Share this URL with people for them to submit files</p>
             <p>
-              <code className={styles.projectURL}>{`${window.location.replace('/inbox', '')}`}</code>
+              <code className={styles.projectURL}>{`${window.location.toString().replace('/inbox', '')}`}</code>
             </p>
           </div>
         )}

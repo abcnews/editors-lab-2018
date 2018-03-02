@@ -9,7 +9,7 @@
     "Colin Gourlay <Gourlay.Colin@abc.net.au>",
     "Nathan Hoad <Hoad.Nathan@abc.net.au>"
   ],
-  "aunty": "preact-app",
+  "aunty": "react-app",
   "scripts": {
     "start": "aunty serve --host=localhost",
     "server": "bin/migrate && node ./server/index.js",
@@ -30,9 +30,8 @@
     "knex": "^0.14.4",
     "mailgun-js": "^0.16.0",
     "pify": "^3.0.0",
-    "preact": "^8.2.7",
-    "preact-compat": "^3.18.0",
-    "preact-router": "^2.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
     "sqlite3": "^3.1.13"
   }
