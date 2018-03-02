@@ -1,12 +1,14 @@
 const { post } = require('axios');
-const { h, Component } = require('preact');
-const { route } = require('preact-router');
+const React = require('react');
+const { withRouter } = require('react-router');
 const { FILE_TYPES } = require('../../constants');
 const styles = require('./styles.scss');
 
-class Home extends Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
+
+    console.log('BUILDING HOME!');
 
     this.addFile = this.addFile.bind(this);
     this.removeFile = this.removeFile.bind(this);
@@ -55,7 +57,8 @@ class Home extends Component {
       // this.setState({ projectSlug: response.data.slug });
       // console.log(response.data.slug, this.props.history);
       // window.location = `/inbox/${response.data.slug}`;
-      route(`/inbox/${response.data.slug}`, true);
+      // route(`/inbox/${response.data.slug}`, true);
+      this.props.history.push(`${response.data.slug}/inbox`);
     });
   }
 
@@ -94,5 +97,5 @@ class Home extends Component {
   }
 }
 
-// module.exports = withRouter(Home);
-module.exports = Home;
+module.exports = withRouter(Home);
+// module.exports = Home;

@@ -1,11 +1,15 @@
 const { get, post } = require('axios');
-const { h, Component } = require('preact');
+const { Route } = require('react-router-dom');
+const { withRouter } = require('react-router');
+const React = require('react');
 const { FILE_TYPES } = require('../../constants');
 const { getFileURL } = require('../../utils');
 const FileUpload = require('../FileUpload');
 const styles = require('./styles.scss');
 
-class Project extends Component {
+const ProjectInbox = require('../ProjectInbox');
+
+class Project extends React.Component {
   constructor(props) {
     super(props);
 
@@ -54,6 +58,11 @@ class Project extends Component {
   // }
 
   render() {
+    const { props } = this;
+    console.log('props', props);
+
+    <Route path="/:slug/inbox" component={ProjectInbox} />;
+
     return (
       <div className={styles.root}>
         <div className={styles.files}>
@@ -79,4 +88,4 @@ class Project extends Component {
   }
 }
 
-module.exports = Project;
+module.exports = withRouter(Project);

@@ -1,5 +1,5 @@
 const { put } = require('axios');
-const { h, Component } = require('preact');
+const React = require('react');
 const styles = require('./styles.scss');
 
 // const CONFIG = {
@@ -8,7 +8,7 @@ const styles = require('./styles.scss');
 //   }
 // };
 
-class FileUpload extends Component {
+class FileUpload extends React.Component {
   constructor(props) {
     super(props);
 

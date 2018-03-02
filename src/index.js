@@ -1,11 +1,12 @@
-const { h, render } = require('preact');
+const React = require('react');
+const DOM = require('react-dom');
 
 const PROJECT_NAME = 'editors-lab-2018';
 const root = document.querySelector(`[data-${PROJECT_NAME}-root]`);
 
 function init() {
   const App = require('./components/App');
-  render(<App />, root, root.firstChild);
+  DOM.render(<App />, root);
 }
 
 init();
@@ -16,12 +17,7 @@ if (module.hot) {
       init();
     } catch (err) {
       const ErrorBox = require('./components/ErrorBox');
-      render(<ErrorBox error={err} />, root, root.firstChild);
+      DOM.render(<ErrorBox error={err} />, root);
     }
   });
 }
-
-// if (process.env.NODE_ENV === 'development') {
-require('preact/devtools');
-console.debug(`[${PROJECT_NAME}] public path: ${__webpack_public_path__}`);
-// }
