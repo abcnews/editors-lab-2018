@@ -1,5 +1,8 @@
 const { get } = require('axios');
 const React = require('react');
+const Button = require('../Button');
+const Input = require('../Input');
+const Logo = require('../Logo');
 const { CopyToClipboard } = require('react-copy-to-clipboard');
 
 const { FILE_TYPES } = require('../../constants');
@@ -38,38 +41,50 @@ class ProjectInbox extends React.Component {
   }
 
   render() {
-    const hasAnyFileUploadsYet = this.state.files.some(file => file.filename);
+    const { files } = this.state;
+
+    const uploadedFiles = files.filter(file => file.filename);
     const projectURL = `${window.location.toString().replace('/inbox', '')}`;
 
     return (
       <div className={styles.root}>
-        {!hasAnyFileUploadsYet && (
-          <div className={styles.project}>
-            <h2>Your project has been created!</h2>
-            <p>Share this URL with people for them to submit files</p>
-            <p>
-              <CopyToClipboard text={projectURL} onCopy={this.onCopyLink}>
-                <code className={styles.projectURL}>{projectURL}</code>
-              </CopyToClipboard>
-              <CopyToClipboard text={projectURL} onCopy={this.onCopyLink}>
-                <button className={styles.copy}>{this.state.isLinkCopied ? 'Copied! 👍' : 'Copy link'}</button>
-              </CopyToClipboard>
-            </p>
-          </div>
-        )}
+        <Logo />
+
         <div className={styles.files}>
-          {this.state.files.map(file => (
+          <h2>
+            {uploadedFiles.length} of {files.length} pictures have been uploaded
+          </h2>
+
+          {uploadedFiles.length === 0 && (
+            <div className={styles.project}>
+              <p>
+                <CopyToClipboard text={projectURL} onCopy={this.onCopyLink}>
+                  <Input label="Share this URL with people for them to send you pictures" value={projectURL} readOnly />
+                </CopyToClipboard>
+                <CopyToClipboard text={projectURL} onCopy={this.onCopyLink}>
+                  <div>
+                    <Button label={this.state.isLinkCopied ? 'Copied! 👍' : 'Copy link'} />
+                  </div>
+                </CopyToClipboard>
+              </p>
+            </div>
+          )}
+
+          {uploadedFiles.length > 0 && <p>Click on them to download</p>}
+          {uploadedFiles.map((file, index) => (
             <div className={styles.file}>
-              {`File (type: ${FILE_TYPES[file.type]})`}
-              {file.filename ? (
-                <a href={getFileURL(file)} download>
-                  <img src={getFileURL(file)} />
-                </a>
-              ) : (
-                '(waiting on submission)'
-              )}
+              <p>
+                Photo {index + 1} - {file.type}
+              </p>
+              <a href={getFileURL(file)} download>
+                <img src={getFileURL(file)} />
+              </a>
             </div>
           ))}
+
+          {uploadedFiles.length < files.length && (
+            <div className={styles.remaining}>There is {files.length - uploadedFiles.length} left to be uploaded.</div>
+          )}
         </div>
       </div>
     );

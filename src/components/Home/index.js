@@ -7,7 +7,7 @@ const Input = require('../Input');
 const Thumbnail = require('../Thumbnail');
 const smoothScroll = require('smoothscroll');
 const styles = require('./styles.scss');
-const logoUrl = require('./logo.png');
+const Logo = require('../Logo');
 
 class Home extends React.Component {
   constructor(props) {
@@ -64,7 +64,7 @@ class Home extends React.Component {
       <div className={styles.root}>
         <div className={styles.header}>
           <h1>
-            <img src={logoUrl} className={styles.logo} />
+            <Logo />
             Get Vision
           </h1>
           <p>Helping you get better pictures from local community members</p>

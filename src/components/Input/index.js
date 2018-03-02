@@ -3,11 +3,18 @@ const styles = require('./styles.scss');
 
 class Input extends React.Component {
   render() {
-    const { label, placeholder, type, help, textarea, value, autoFocus, onChange } = this.props;
+    const { label, placeholder, type, help, textarea, value, autoFocus, onChange, readOnly } = this.props;
 
     let input;
     if (textarea) {
-      input = <textarea onChange={e => onChange(e.target.value)} value={value || ''} autoFocus={autoFocus} />;
+      input = (
+        <textarea
+          onChange={e => onChange(e.target.value)}
+          value={value || ''}
+          autoFocus={autoFocus}
+          readOnly={readOnly}
+        />
+      );
     } else {
       input = (
         <input
@@ -16,6 +23,7 @@ class Input extends React.Component {
           placeholder={placeholder}
           value={value || ''}
           autoFocus={autoFocus}
+          readOnly={readOnly}
         />
       );
     }

@@ -1,18 +1,40 @@
 .root {
+  padding: 5px;
+  text-align: center;
 }
 
 .project {
-}
-
-.projectURL {
-}
-
-.copy {
-  display: block;
+  max-width: 400px;
+  margin: auto;
 }
 
 .files {
+  h2 {
+    font-size: 18px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  p {
+    color: #999;
+    font-size: 16px;
+  }
 }
 
 .file {
+  padding: 20px;
+
+  p {
+    color: black;
+    font-weight: bold;
+  }
+}
+
+.remaining {
+  margin: 30px auto;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+
+  color: #999;
+  font-size: 16px;
 }
