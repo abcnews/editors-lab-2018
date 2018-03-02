@@ -14,7 +14,7 @@ class Project extends React.Component {
     super(props);
 
     this.onFileUploaded = this.onFileUploaded.bind(this);
-    // this.done = this.done.bind(this);
+    this.done = this.done.bind(this);
 
     this.state = {
       files: [],
@@ -22,7 +22,7 @@ class Project extends React.Component {
     };
 
     get(`/api/projects/${this.props.match.params.slug}`).then(response => {
-      this.setState({ files: response.data.uploads });
+      this.setState({ hasEmail: !!response.data.email, files: response.data.uploads });
     });
   }
 
@@ -40,13 +40,11 @@ class Project extends React.Component {
     });
   }
 
-  // done() {
-  //   post(DONE_URL, new FormData()).then(response => {
-  //     // TODO: Thank you page?
-  //   });
-
-  //   this.setState({ isDone: true });
-  // }
+  done() {
+    post(`/api/projects/${this.props.match.params.slug}/done`, {}).then(response => {
+      this.setState({ isDone: true });
+    });
+  }
 
   render() {
     return (
@@ -68,11 +66,11 @@ class Project extends React.Component {
             </div>
           ))}
         </div>
-        {/* {this.state.isDone ? null : (
+        {!this.state.hasEmail || this.state.isDone ? null : (
           <button className={styles.done} onClick={this.done}>
             I'm done!
           </button>
-        )} */}
+        )}
       </div>
     );
   }
