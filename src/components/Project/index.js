@@ -26,6 +26,7 @@ class Project extends React.Component {
       this.setState({ hasEmail: !!response.data.email, files: response.data.uploads });
     });
   }
+
   onFilePreview({ slug, data }) {
     if (data.url) {
       this.setState({

@@ -15,17 +15,24 @@ class ProjectInbox extends React.Component {
 
     this.onCopyLink = this.onCopyLink.bind(this);
     this.onWindowBlur = this.onWindowBlur.bind(this);
+    this.pollForUpdates = this.pollForUpdates.bind(this);
 
     this.state = {
       files: [],
       isLinkCopied: false
     };
 
+    // Dodgy hack - probably don't spam the server like this in subsequent prototypes.
+    this._pollInterval = setInterval(this.pollForUpdates, 5000);
+    this.pollForUpdates();
+
+    window.addEventListener('blur', this.onWindowBlur);
+  }
+
+  pollForUpdates() {
     get(`/api/projects/${this.props.match.params.slug}`).then(response => {
       this.setState({ files: response.data.uploads });
     });
-
-    window.addEventListener('blur', this.onWindowBlur);
   }
 
   onCopyLink() {
@@ -37,6 +44,7 @@ class ProjectInbox extends React.Component {
   }
 
   componentWillUnmount() {
+    clearInterval(this._pollInterval);
     window.removeEventListener('blur', this.onWindowBlur);
   }
 
