@@ -1,7 +1,10 @@
 module.exports = {
   FILE_TYPES: {
-    'photo-person': 'A photo of someone',
-    'photo-object': 'A photo of something'
+    who: 'A photo of someone',
+    what: 'A photo of what the story is about',
+    where: 'A photo that sets the scene',
+    doing: 'Show us how people are reacting to the thing',
+    best: 'Show us your favourite photo of the thing'
   },
   UPLOADS_ROOT: '/uploads/'
 };

@@ -5,20 +5,6 @@ const Project = require('../Project');
 const ProjectInbox = require('../ProjectInbox');
 const styles = require('./styles.scss');
 
-// class App extends Component {
-//   render() {
-//     return (
-//       <div className={styles.root}>
-//         <Router>
-//           <Home path="/" />
-//           <ProjectInbox path="/inbox/:slug" />
-//           <Project path="/:slug" />
-//         </Router>
-//       </div>
-//     );
-//   }
-// }
-
 class NotFound extends React.Component {
   render() {
     return <div>Not found</div>;

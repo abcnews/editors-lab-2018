@@ -11,8 +11,9 @@
   ],
   "aunty": "react-app",
   "scripts": {
+    "build": "aunty build --host=locahost",
     "start": "aunty serve --host=localhost",
-    "server": "bin/migrate && node ./server/index.js",
+    "server": "bin/migrate && npm run build && node ./server/index.js",
     "test": "NODE_ENV=test bin/migrate && jest --runInBand"
   },
   "devDependencies": {
