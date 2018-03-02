@@ -32,14 +32,17 @@ class PleaseRotate extends React.Component {
   }
 
   render() {
-    if (this.state.needsToRotate) {
-      return (
-        <div className={styles.message}>
-          <Logo />
-          <p>Please have your phone side-on when taking photos.</p>
-        </div>
-      );
-    }
+    return (
+      <div>
+        <div>{this.props.children}</div>
+        {this.state.needsToRotate && (
+          <div className={styles.message}>
+            <Logo />
+            <p>Please have your phone side-on when taking photos.</p>
+          </div>
+        )}}
+      </div>
+    );
 
     return this.props.children;
   }
