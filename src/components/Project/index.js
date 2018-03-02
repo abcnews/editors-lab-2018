@@ -13,26 +13,17 @@ class Project extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onProject = this.onProject.bind(this);
     this.onFileUploaded = this.onFileUploaded.bind(this);
     // this.done = this.done.bind(this);
 
     this.state = {
-      files: [
-        {
-          slug: 'test'
-        }
-      ],
+      files: [],
       isDone: false
     };
 
-    get(`/api/projects/${this.props.slug}`).then(response => {
+    get(`/api/projects/${this.props.match.params.slug}`).then(response => {
       this.setState({ files: response.data.uploads });
     });
-  }
-
-  onProject({ files }) {
-    this.setState({ files });
   }
 
   onFileUploaded({ slug, data }) {
@@ -58,11 +49,6 @@ class Project extends React.Component {
   // }
 
   render() {
-    const { props } = this;
-    console.log('props', props);
-
-    <Route path="/:slug/inbox" component={ProjectInbox} />;
-
     return (
       <div className={styles.root}>
         <div className={styles.files}>
@@ -73,7 +59,11 @@ class Project extends React.Component {
               {file.filename ? (
                 <img src={getFileURL(file)} />
               ) : (
-                <FileUpload project={this.props.slug} upload={file.slug} onUploaded={this.onFileUploaded} />
+                <FileUpload
+                  project={this.props.match.params.slug}
+                  upload={file.slug}
+                  onUploaded={this.onFileUploaded}
+                />
               )}
             </div>
           ))}

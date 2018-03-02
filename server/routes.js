@@ -58,7 +58,7 @@ router.put('/projects/:project/uploads/:upload', (request, response) => {
     }
 
     // Save and refresh the upload
-    db('uploads')
+    await db('uploads')
       .where({ id: request.upload.id })
       .update({ filename: uploadFilename });
 
@@ -70,17 +70,15 @@ router.put('/projects/:project/uploads/:upload', (request, response) => {
 
 // Notify the project creator they should visit their inbox
 router.post('/projects:project/done', async (request, response) => {
-  const project = await db.createProject(request.body);
-
-  if (project.email) {
+  if (request.project.email) {
     const link = `${
       process.env.NODE_ENV === 'production' ? `https://${HOSTNAME}` : `http://localhost:${process.env.PORT || 9000}`
-    }/${project.slug}/inbox`;
+    }/${request.project.slug}/inbox`;
 
     mailgun.messages().send(
       {
         from: `Get Vision <notifications@${MAILGUN_DOMAIN}>`,
-        to: project.email,
+        to: request.project.email,
         subject: "You've got files!",
         text: `Check out your project inbox: ${link}`
       },

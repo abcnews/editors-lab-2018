@@ -1,5 +1,7 @@
 const { get } = require('axios');
 const React = require('react');
+const { CopyToClipboard } = require('react-copy-to-clipboard');
+
 const { FILE_TYPES } = require('../../constants');
 const { getFileURL } = require('../../utils');
 const styles = require('./styles.scss');
@@ -8,25 +10,25 @@ class ProjectInbox extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onProject = this.onProject.bind(this);
+    this.onCopyLink = this.onCopyLink.bind(this);
 
     this.state = {
-      files: []
+      files: [],
+      isLinkCopied: false
     };
 
-    console.log(this.props);
-
-    get(`/api/projects/${this.props.slug}`).then(response => {
+    get(`/api/projects/${this.props.match.params.slug}`).then(response => {
       this.setState({ files: response.data.uploads });
     });
   }
 
-  onProject({ files }) {
-    this.setState({ files });
+  onCopyLink() {
+    this.setState({ isLinkCopied: true });
   }
 
   render() {
     const hasAnyFileUploadsYet = this.state.files.some(file => file.filename);
+    const projectURL = `${window.location.toString().replace('/inbox', '')}`;
 
     return (
       <div className={styles.root}>
@@ -35,7 +37,13 @@ class ProjectInbox extends React.Component {
             <h2>Your project has been created!</h2>
             <p>Share this URL with people for them to submit files</p>
             <p>
-              <code className={styles.projectURL}>{`${window.location.toString().replace('/inbox', '')}`}</code>
+              <code className={styles.projectURL}>{projectURL}</code>
+              <CopyToClipboard text={projectURL} onCopy={this.onCopyLink}>
+                <button className={styles.copy}>
+                  {'Copy link'}
+                  {this.state.isLinkCopied ? ' 👍' : null}
+                </button>
+              </CopyToClipboard>
             </p>
           </div>
         )}

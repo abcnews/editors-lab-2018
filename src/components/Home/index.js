@@ -8,8 +8,6 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log('BUILDING HOME!');
-
     this.addFile = this.addFile.bind(this);
     this.removeFile = this.removeFile.bind(this);
     this.updateNotes = this.updateNotes.bind(this);
@@ -53,11 +51,6 @@ class Home extends React.Component {
       email: this.state.email,
       uploads: this.state.files
     }).then(response => {
-      // console.log(response.data.slug);
-      // this.setState({ projectSlug: response.data.slug });
-      // console.log(response.data.slug, this.props.history);
-      // window.location = `/inbox/${response.data.slug}`;
-      // route(`/inbox/${response.data.slug}`, true);
       this.props.history.push(`${response.data.slug}/inbox`);
     });
   }

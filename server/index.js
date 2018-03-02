@@ -24,7 +24,6 @@ app.get('*', (request, response) => {
 });
 
 app.use((err, request, response, next) => {
-  console.log(err);
   response.json({ err });
 });
 
