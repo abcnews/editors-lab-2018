@@ -3,7 +3,7 @@ const styles = require('./styles.scss');
 
 class Input extends React.Component {
   render() {
-    const { label, placeholder, type, help } = this.props;
+    const { label, placeholder, type, help, onChange } = this.props;
 
     return (
       <span className={styles.root}>

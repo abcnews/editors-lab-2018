@@ -69,7 +69,7 @@ router.put('/projects/:project/uploads/:upload', (request, response) => {
 });
 
 // Notify the project creator they should visit their inbox
-router.post('/projects:project/done', async (request, response) => {
+router.post('/projects/:project/done', async (request, response) => {
   if (request.project.email) {
     const link = `${
       process.env.NODE_ENV === 'production' ? `https://${HOSTNAME}` : `http://localhost:${process.env.PORT || 9000}`
@@ -84,7 +84,7 @@ router.post('/projects:project/done', async (request, response) => {
       },
       (err, body) => {
         if (err) {
-          response.json({ err });
+          return response.json({ err });
         }
 
         response.json({ status: 'Sent' });

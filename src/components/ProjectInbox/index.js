@@ -11,6 +11,7 @@ class ProjectInbox extends React.Component {
     super(props);
 
     this.onCopyLink = this.onCopyLink.bind(this);
+    this.onWindowBlur = this.onWindowBlur.bind(this);
 
     this.state = {
       files: [],
@@ -20,10 +21,20 @@ class ProjectInbox extends React.Component {
     get(`/api/projects/${this.props.match.params.slug}`).then(response => {
       this.setState({ files: response.data.uploads });
     });
+
+    window.addEventListener('blur', this.onWindowBlur);
   }
 
   onCopyLink() {
     this.setState({ isLinkCopied: true });
+  }
+
+  onWindowBlur() {
+    this.setState({ isLinkCopied: false });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('blur', this.onWindowBlur);
   }
 
   render() {
@@ -37,12 +48,11 @@ class ProjectInbox extends React.Component {
             <h2>Your project has been created!</h2>
             <p>Share this URL with people for them to submit files</p>
             <p>
-              <code className={styles.projectURL}>{projectURL}</code>
               <CopyToClipboard text={projectURL} onCopy={this.onCopyLink}>
-                <button className={styles.copy}>
-                  {'Copy link'}
-                  {this.state.isLinkCopied ? ' 👍' : null}
-                </button>
+                <code className={styles.projectURL}>{projectURL}</code>
+              </CopyToClipboard>
+              <CopyToClipboard text={projectURL} onCopy={this.onCopyLink}>
+                <button className={styles.copy}>{this.state.isLinkCopied ? 'Copied! 👍' : 'Copy link'}</button>
               </CopyToClipboard>
             </p>
           </div>
