@@ -1,7 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const MailgunJS = require('mailgun-js');
 const db = require('./db');
 const config = require('./config');
+
+const HOSTNAME = 'getvision.online';
+
+const MAILGUN_API_KEY = 'key-6e53568a9308f6cca4c07d2f02b33b87';
+const MAILGUN_DOMAIN = HOSTNAME;
+// const MAILGUN_DOMAIN = 'sandbox568f0172e4164f3da0ebab16f74ae431.mailgun.org';
+
+const mailgun = MailgunJS({ apiKey: MAILGUN_API_KEY, domain: MAILGUN_DOMAIN });
 
 // Param helpers
 
@@ -57,6 +66,35 @@ router.put('/projects/:project/uploads/:upload', (request, response) => {
 
     response.json(upload);
   });
+});
+
+// Notify the project creator they should visit their inbox
+router.post('/projects:project/done', async (request, response) => {
+  const project = await db.createProject(request.body);
+
+  if (project.email) {
+    const link = `${
+      process.env.NODE_ENV === 'production' ? `https://${HOSTNAME}` : `http://localhost:${process.env.PORT || 9000}`
+    }/${project.slug}/inbox`;
+
+    mailgun.messages().send(
+      {
+        from: `Get Vision <notifications@${MAILGUN_DOMAIN}>`,
+        to: project.email,
+        subject: "You've got files!",
+        text: `Check out your project inbox: ${link}`
+      },
+      (err, body) => {
+        if (err) {
+          response.json({ err });
+        }
+
+        response.json({ status: 'Sent' });
+      }
+    );
+  } else {
+    response.json({ status: 'No email address to send to.' });
+  }
 });
 
 module.exports = router;

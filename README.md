@@ -7,6 +7,7 @@ Our work at Walkleys/GEN Editors Lab Sydney event in 2018.
 * `POST /api/projects` - create a new project -> { email, uploads }
 * `GET /api/projects/:projectSlug` - get a project
 * `PUT /api/projects/:projectSlug/uploads/:uploadSlug` - upload a file
+* `POST /api/projects/:projectSlug/done` - mark a project as done
 
 ## Authors
 
