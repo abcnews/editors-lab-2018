@@ -1,8 +1,9 @@
 .root {
+  display: inline-block;
   padding: 0 16px;
   height: 36px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 1.125rem;
   text-transform: uppercase;
   color: white;
   background: black;
@@ -20,4 +21,9 @@
 .clear {
   background: none;
   color: black;
+}
+
+.primary {
+  background: seagreen;
+  color: white;
 }
