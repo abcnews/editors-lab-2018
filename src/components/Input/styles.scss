@@ -6,7 +6,8 @@
     font-size: 16px;
   }
 
-  input {
+  input,
+  textarea {
     display: block;
     border: 2px solid #999;
     border-radius: 3px;
@@ -15,6 +16,10 @@
     font-size: 16px;
     width: 100%;
     margin-bottom: 4px;
+  }
+
+  textarea {
+    height: 100px;
   }
 }
 

@@ -4,6 +4,8 @@ const { withRouter } = require('react-router');
 const { FILE_TYPES } = require('../../constants');
 const Button = require('../Button');
 const Input = require('../Input');
+const Thumbnail = require('../Thumbnail');
+const smoothScroll = require('smoothscroll');
 const styles = require('./styles.scss');
 const logoUrl = require('./logo.png');
 
@@ -80,30 +82,49 @@ class Home extends React.Component {
         </div>
 
         <div className={styles.pictures}>
-          <p>Ok, now describe the kinds of photos that you need:</p>
+          <p>Ok, now add the kinds of photos that you need:</p>
 
           <div className={styles.files}>
             {this.state.files.map((file, index) => (
               <div className={styles.file}>
-                <h2>Picture {index + 1}</h2>
-                <p>[Example {file.type} image...]</p>
-                <textarea onChange={e => this.updateNotes(index, e.target.value)} value={file.notes || ''} />
-                <button onClick={e => this.removeFile(index)}>{`Remove file`}</button>
+                <div className={styles.fileDetails}>
+                  <h2>
+                    Picture {index + 1} - {file.type}
+                  </h2>
+                  <Input
+                    label="Describe the photo that you want:"
+                    textarea
+                    onChange={notes => this.updateNotes(index, notes)}
+                    value={file.notes || ''}
+                    autoFocus
+                  />
+                  <p>Example for their reference:</p>
+                  <Thumbnail className={styles.preview} type={file.type} />
+                  <button className={styles.remove} onClick={e => this.removeFile(index)}>
+                    Remove
+                  </button>
+                </div>
               </div>
             ))}
           </div>
 
           <div className={styles.types}>
             {Object.keys(FILE_TYPES).map(type => (
-              <div className={styles.type}>
-                <button onClick={e => this.addFile(type)}>{`Add a "${FILE_TYPES[type]}" file`}</button>
-              </div>
+              <button className={styles.addType} onClick={e => this.addFile(type)}>
+                <Thumbnail className={styles.addPreview} type={type} />
+                Add a "{type}" photo
+              </button>
             ))}
           </div>
         </div>
+
         {this.state.files.length > 0 && (
           <div className={styles.done}>
-            <Button className={styles.create} onClick={this.create} label="Create project" />
+            <p>
+              When you're finished adding the photos you want then click here to create a link to send to your community
+              member.
+            </p>
+            <Button className={styles.create} onClick={this.create} label="Create the link to send" />
           </div>
         )}
       </div>

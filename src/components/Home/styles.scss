@@ -41,3 +41,80 @@
   margin: 10px auto 2px auto;
   max-width: 150px;
 }
+
+.files {
+  .file {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin: 10px auto 30px auto;
+    position: relative;
+
+    .fileDetails {
+      max-width: 400px;
+      margin: auto;
+
+      .preview {
+        margin-bottom: 10px;
+        border-radius: 3px;
+      }
+    }
+
+    h2 {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #666;
+    }
+
+    .remove {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      border: none;
+      background: none;
+      color: #900;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.types {
+  background: rgb(195, 255, 198);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+
+  .addType {
+    flex: 0 0 auto;
+    width: 200px;
+    padding: 5px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  .addPreview {
+    max-width: 100%;
+    display: block;
+    margin-bottom: 5px;
+    border-radius: 3px;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .types {
+    flex-wrap: wrap;
+
+    .addType {
+      width: 50%;
+    }
+  }
+}
+
+.done {
+  margin: 40px auto;
+
+  p {
+    font-size: 15px;
+  }
+}
