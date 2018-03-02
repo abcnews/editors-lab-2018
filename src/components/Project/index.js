@@ -1,5 +1,7 @@
 const { get, post } = require('axios');
 const { h, Component } = require('preact');
+const { FILE_TYPES } = require('../../constants');
+const { getFileURL } = require('../../utils');
 const FileUpload = require('../FileUpload');
 const styles = require('./styles.scss');
 
@@ -9,7 +11,7 @@ class Project extends Component {
 
     this.onProject = this.onProject.bind(this);
     this.onFileUploaded = this.onFileUploaded.bind(this);
-    this.done = this.done.bind(this);
+    // this.done = this.done.bind(this);
 
     this.state = {
       files: [
@@ -21,7 +23,7 @@ class Project extends Component {
     };
 
     get(`/api/projects/${this.props.slug}`).then(response => {
-      this.setState({ files: response.data.files });
+      this.setState({ files: response.data.uploads });
     });
   }
 
@@ -33,13 +35,13 @@ class Project extends Component {
     this.setState({
       files: this.state.files.reduce((memo, file) => {
         if (file.slug === slug) {
-          file.url = data.url;
+          file.filename = data.filename;
         }
 
         memo.push(file);
 
         return memo;
-      }, {})
+      }, [])
     });
   }
 
@@ -57,8 +59,10 @@ class Project extends Component {
         <div className={styles.files}>
           {this.state.files.map(file => (
             <div className={styles.file}>
-              {file.url ? (
-                <img src={file.url} />
+              {`File (type: ${FILE_TYPES[file.type]})`}
+              {file.notes && <p>{file.notes}</p>}
+              {file.filename ? (
+                <img src={getFileURL(file)} />
               ) : (
                 <FileUpload project={this.props.slug} upload={file.slug} onUploaded={this.onFileUploaded} />
               )}

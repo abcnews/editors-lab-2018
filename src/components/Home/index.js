@@ -1,12 +1,8 @@
 const { post } = require('axios');
 const { h, Component } = require('preact');
 const { route } = require('preact-router');
+const { FILE_TYPES } = require('../../constants');
 const styles = require('./styles.scss');
-
-const FILE_TYPES = {
-  'photo-person': 'A photo of someone',
-  'photo-object': 'A photo of something'
-};
 
 class Home extends Component {
   constructor(props) {
@@ -51,16 +47,15 @@ class Home extends Component {
   }
 
   create() {
-    const formData = new FormData();
-
-    formData.append('email', this.state.email);
-
-    this.state.files.forEach(file => {
-      formData.append('file', JSON.stringify(file));
-    });
-
-    post('/api/projects', formData).then(response => {
-      route(`/${response.data.slug}/inbox`);
+    post('/api/projects', {
+      email: this.state.email,
+      uploads: this.state.files
+    }).then(response => {
+      // console.log(response.data.slug);
+      // this.setState({ projectSlug: response.data.slug });
+      // console.log(response.data.slug, this.props.history);
+      // window.location = `/inbox/${response.data.slug}`;
+      route(`/inbox/${response.data.slug}`, true);
     });
   }
 
@@ -89,12 +84,15 @@ class Home extends Component {
             </div>
           ))}
         </div>
-        <button className={styles.create} onClick={this.create}>
-          Create project
-        </button>
+        {this.state.files.length > 0 && (
+          <button className={styles.create} onClick={this.create}>
+            Create project
+          </button>
+        )}
       </div>
     );
   }
 }
 
+// module.exports = withRouter(Home);
 module.exports = Home;

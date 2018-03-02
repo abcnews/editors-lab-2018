@@ -40,11 +40,23 @@ const findProject = async slug => {
   const project = await knex('projects')
     .where({ slug })
     .first();
-  project.uploads = await knex('uploads').where({ projectId: project.id });
+
+  if (project) {
+    project.uploads = await knex('uploads').where({ projectId: project.id });
+  }
 
   return project;
+};
+
+const findUpload = async slug => {
+  const upload = await knex('uploads')
+    .where({ slug })
+    .first();
+
+  return upload;
 };
 
 module.exports = knex;
 module.exports.createProject = createProject;
 module.exports.findProject = findProject;
+module.exports.findUpload = findUpload;

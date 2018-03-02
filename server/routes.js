@@ -11,9 +11,7 @@ router.param('project', async (request, response, next, slug) => {
 });
 
 router.param('upload', async (request, response, next, slug) => {
-  request.upload = await db('uploads')
-    .where({ slug })
-    .first();
+  request.upload = await db.findUpload(slug);
   next();
 });
 
@@ -34,11 +32,11 @@ router.get('/projects/:project', (request, response) => {
 // Save an uploaded file
 router.put('/projects/:project/uploads/:upload', (request, response) => {
   if (!request.files || !request.files.file) {
-    return res.status(400).json({ err: 'No files were uploaded.' });
+    return response.status(400).json({ err: 'No files were uploaded.' });
   }
 
   if (request.upload.projectId !== request.project.id) {
-    return res.status(500).json({ err: 'That upload does not belong to the project' });
+    return response.status(500).json({ err: 'That upload does not belong to the project' });
   }
 
   const file = request.files.file;
@@ -46,15 +44,18 @@ router.put('/projects/:project/uploads/:upload', (request, response) => {
   const uploadPath = `${config.UPLOAD_PATH}/${uploadFilename}`;
 
   file.mv(uploadPath, async err => {
-    if (err) return res.status(500).json({ err });
+    if (err) {
+      return response.status(500).json({ err });
+    }
 
     // Save and refresh the upload
     db('uploads')
-      .where({ id: upload.id })
+      .where({ id: request.upload.id })
       .update({ filename: uploadFilename });
-    const project = await db.findProject(request.project.slug);
 
-    response.json(project);
+    const upload = await db.findUpload(request.upload.slug);
+
+    response.json(upload);
   });
 });
 

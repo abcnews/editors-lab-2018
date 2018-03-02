@@ -1,5 +1,7 @@
 const { get } = require('axios');
 const { h, Component } = require('preact');
+const { FILE_TYPES } = require('../../constants');
+const { getFileURL } = require('../../utils');
 const styles = require('./styles.scss');
 
 class ProjectInbox extends Component {
@@ -12,8 +14,10 @@ class ProjectInbox extends Component {
       files: []
     };
 
-    get(`/api/projects/${slug}`).then(response => {
-      this.setState({ files: response.data.files });
+    console.log(this.props);
+
+    get(`/api/projects/${this.props.slug}`).then(response => {
+      this.setState({ files: response.data.uploads });
     });
   }
 
@@ -22,16 +26,16 @@ class ProjectInbox extends Component {
   }
 
   render() {
-    const hasAnyFileUploadsYet = this.status.files.some(file => file.url);
+    const hasAnyFileUploadsYet = this.state.files.some(file => file.filename);
 
     return (
       <div className={styles.root}>
-        {hasAnyFileUploadsYet && (
-          <div className={styles.after}>
+        {!hasAnyFileUploadsYet && (
+          <div className={styles.project}>
             <h2>Your project has been created!</h2>
             <p>Share this URL with people for them to submit files</p>
             <p>
-              <code className={styles.projectURL}>{`${window.location}${slug}`}</code>
+              <code className={styles.projectURL}>{`${window.location.replace('/inbox', '')}`}</code>
             </p>
           </div>
         )}
@@ -39,9 +43,9 @@ class ProjectInbox extends Component {
           {this.state.files.map(file => (
             <div className={styles.file}>
               {`File (type: ${FILE_TYPES[file.type]})`}
-              {file.url ? (
-                <a href={file.url} download>
-                  <img src={file.url} />
+              {file.filename ? (
+                <a href={getFileURL(file)} download>
+                  <img src={getFileURL(file)} />
                 </a>
               ) : (
                 '(waiting on submission)'
