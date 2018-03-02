@@ -82,7 +82,7 @@ class Home extends React.Component {
         </div>
 
         <div className={styles.pictures}>
-          <p>Ok, now add the kinds of photos that you need:</p>
+          {this.state.files.length === 0 && <p>Ok, now add the kinds of photos that you need:</p>}
 
           <div className={styles.files}>
             {this.state.files.map((file, index) => (

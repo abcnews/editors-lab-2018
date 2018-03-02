@@ -3,7 +3,7 @@ const styles = require('./styles.scss');
 
 class Input extends React.Component {
   render() {
-    const { label, placeholder, type, help, textarea, value, autoFocus } = this.props;
+    const { label, placeholder, type, help, textarea, value, autoFocus, onChange } = this.props;
 
     let input;
     if (textarea) {
